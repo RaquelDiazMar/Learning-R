@@ -1,0 +1,42 @@
+---
+title: "Evaluar la eficiencia del código en R"
+output: html_notebook
+---
+
+Cómo evaluar la velocidad a la que se procesa código
+```{r}
+library(readr)
+df <- read.csv("base_datos_2008.csv")
+delay <- df$ArrDelay
+delay <- delay[is.na(delay)]
+
+start <- Sys.time() # Creamos una nueva variable y la igualamos a exactamente el momento en el que se ejecute esta línea
+
+#Código
+mean(delay)
+
+
+print(Sys.time() - start)
+
+
+system.time(median(delay)) #elapsed es la suma de user y system
+
+
+#Vamos a ver 3 maneras distintas de calcular la media de una columna
+install.packages("rbenchmark")
+library(rbenchmark) #rbenchmark permite comparar diversos procesos a la vez
+??rbenchmark
+
+benchmark("Media función"={mean(delay)},
+          "Media con funciones"={sum(delay)/nrow(delay)},
+          "Media manual"={media <- 0
+          for (i in 1:nrow(df)){
+            media<-
+              media+delay[i]
+          }
+          media/nrow(df)},
+          replications=20,
+          columns=c("test", "replications", "elapsed","relative"))
+```
+
+
