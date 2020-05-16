@@ -1,0 +1,48 @@
+---
+title: "Tipos de objetos en R"
+output: html_notebook
+---
+
+Tipos de objeto en R
+```{r}
+num <- 5
+num[1]
+num <- 5.0 #R no distingue entre reales y enteros
+num
+
+string <- "esto es una frase"
+string [1][1] #No permite entrar en el primer elemento como Python
+
+nums <- 1:10
+nums[2:3]
+
+nums <- c(1, FALSE, "hola") #convierte todos los elemntos al tipo más flexible
+nums 
+
+matriz <- matrix(1:6, ncol=3)
+matriz
+matriz2 <- matrix(1:6, ncol=3, byrow=TRUE) #para rellenar la matriz por filas
+matriz2
+
+matriz[1, 2:3] #select rows, columns
+
+df <- as.data.frame(read.csv("base_datos_2008.csv", nrows = 100))
+df
+df$Year
+df["Year"]
+df[1:5,c("Year","Month")]
+
+lista <- list()
+lista$objeto1 <- c(1,2,3)
+lista$objeto2 <- "String"
+lista$objeto3 <- df[1:5,]
+lista
+lista$objeto3
+lista[[1]]
+lista[[1]][2:3]
+lista$objeto3[,"Year"]
+
+
+
+
+```
