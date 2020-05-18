@@ -1,0 +1,50 @@
+---
+title: "rep() for repetitive vectors"
+output: html_notebook
+---
+
+rep replicates the values in x. It is a generic function, and the (internal) default method is described here.
+
+rep.int and rep_len are faster simplified versions for two common cases. Internally, they are generic, so methods can be defined for them.
+
+rep(x, ...)
+
+rep.int(x, times)
+
+rep_len(x, length.out)
+
+```{r}
+?rep
+rep("Hello", 5)
+```
+
+```{r}
+rep("hello", length.out = 10)
+rep_len("hello", length.out = 10)
+```
+
+```{r}
+rep(c("hello","bob"), 3) #repeats the vector 3 times
+rep(c("hello","bob"), each = 3) #repeats each vector element 3 times
+```
+
+
+rep() applied to dataframes returns a list
+```{r}
+df <- data.frame(x = c(4,5,6), y = c(7,8,9))
+dfrep <- rep(df,3) 
+```
+
+How to set quarter identifiers for a random number of years:
+```{r}
+paste0(2003:2021,"-") # range of years
+rep(paste0(2003:2021,"-"), 4) # 4x years - one for each quarter
+paste0(rep(paste0(2003:2021,"-"),4),c("Q1","Q2","Q3","Q4"))
+sort(paste0(rep(paste0(2003:2021,"-"),4),c("Q1","Q2","Q3","Q4"))) # sort by year
+```
+
+End
+```{r}
+rm(list=ls())
+```
+ctrl+l
