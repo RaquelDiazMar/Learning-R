@@ -1,0 +1,24 @@
+---
+title: "tapply"
+output: html_notebook
+---
+
+Load built-in dataset "warpbreaks"
+```{r}
+?warpbreaks
+data("warpbreaks")
+warpbreaks
+```
+
+TAPPLY
+Apply a function to each cell of a ragged array, that is to each (non-empty) group of values given by a unique combination of the levels of certain factors.
+tapply(X, INDEX, FUN = NULL, ..., default = NA, simplify = TRUE)
+```{r}
+?tapply
+data <- tapply(warpbreaks$breaks,list(warpbreaks$wool,warpbreaks$tension),mean)
+class(data)
+data
+t(data)
+```
+
+
