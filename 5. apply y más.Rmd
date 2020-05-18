@@ -1,0 +1,68 @@
+---
+title: "apply y más"
+output: html_notebook
+---
+
+When working with R, it is advisable to use APPLY instead of FOR loops.
+```{r}
+?WorldPhones # The number of telephones in various regions of the world (in thousands).
+data("WorldPhones")
+```
+
+Using a FOR loop:
+```{r}
+for(aCountry in 1:ncol(WorldPhones)) {
+  print(mean(WorldPhones[aCountry, ]))
+}
+```
+```{r}
+for(Year in 1:nrow(WorldPhones)) {
+  print(mean(WorldPhones[, Year]))
+}
+```
+
+Using APPLY instead:
+```{r}
+?apply # Returns a vector or array or list of values obtained by applying a function to margins of an array or matrix.
+apply(WorldPhones,1,mean)
+```
+
+```{r}
+apply(WorldPhones,2,mean)
+```
+
+
+```{r}
+?apropos # returns a character vector giving the names of objects in the search list matching (as a regular expression) what.
+apropos(".apply")
+```
+```{r}
+?find #returns where objects of a given name can be found.
+find("apply")
+```
+
+LAPPLY - para listas
+```{r}
+?lapply # returns a list of the same length as X, each element of which is the result of applying FUN to the corresponding element of X.
+?list # Functions to construct, coerce and check for both kinds of R lists.
+world.phone.list <- list(WorldPhones) #coerces the dataframe into a list
+lapply(world.phone.list,function(x) {x>10000}) # for each value in WorldPhones, asks whether it is greater than 10,000
+```
+
+TAPPLY
+```{r}
+?tapply #Apply a function to each cell of a ragged array, that is to each (non-empty) group of values given by a unique combination of the levels of certain factors.
+```
+
+SAPPLY - para vectores
+```{r}
+?sapply #is a user-friendly version and wrapper of lapply by default returning a vector, matrix or, if simplify = "array", an array if appropriate, by applying simplify2array(). sapply(x, f, simplify = FALSE, USE.NAMES = FALSE) is the same as lapply(x, f).
+```
+
+
+END
+```{r}
+rm(list=ls())
+```
+
+ctrl+l
