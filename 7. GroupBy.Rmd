@@ -1,0 +1,61 @@
+---
+title: "R GroupBY"
+output: html_notebook
+---
+
+```{r}
+df <- as.data.frame(read.csv("GitHub/Learning R/base_datos_2008.csv"))
+
+head(df)
+```
+```{r}
+str(df)
+```
+
+```{r}
+summary(df)
+```
+
+Agrupando según 1 atributo
+```{r}
+?aggregate # Splits the data into subsets, computes summary statistics for each, and returns the result in a convenient form.
+aggregate(x=df$ArrDelay, by=list(df$DayOfWeek), FUN=mean, na.rm=TRUE) # by necesita una lista !!!
+```
+
+```{r}
+aggregate(x=list(df$ArrDelay,df$DepDelay),by=list(df$DayOfWeek), FUN=mean, na.rm=TRUE)
+# ilegibilidad de nombre de las columnas
+```
+
+```{r}
+round(aggregate(x=list("Arr"=df$ArrDelay,"Dep"=df$DepDelay),by=list("Day"=df$DayOfWeek), FUN=mean, na.rm=TRUE),2)
+# se nombra de forma legible los atributos seleccionados, y se limita a 2 decimales
+```
+
+Agrupando según 2 atributos
+```{r}
+aggregate(x=list("Arr"=df$ArrDelay,"Dep"=df$DepDelay),by=list("Day"=df$DayOfWeek, "Origin"=df$Origin), FUN=mean, na.rm=TRUE)
+# no podemos utilizar "round" como anteriormente porque "Origin" no es una variable numérica
+```
+
+Cambiamos el orden de los atributos de agrupación
+```{r}
+aggregate(x=list("Arr"=df$ArrDelay,"Dep"=df$DepDelay),by=list("Origin"=df$Origin, "Day"=df$DayOfWeek), FUN=mean, na.rm=TRUE)
+
+```
+
+Añadimos una segunda función a la agrupación
+```{r}
+aggregate(x=list("Arr"=df$ArrDelay,"Dep"=df$DepDelay),
+          by=list("Origin"=df$Origin, "Day"=df$DayOfWeek), 
+          FUN=function(x) 
+            return(c(mean(x, na.rm=TRUE), median(x, na.rm=TRUE))))
+```
+
+
+END
+```{r}
+rm(list=ls())
+```
+
+Ctrl+l
