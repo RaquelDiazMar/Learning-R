@@ -1,0 +1,173 @@
+---
+title: "plotting"
+output: html_notebook
+---
+
+Quick intro using 
+```{r}
+data("ChickWeight")
+```
+
+Plotting 2 variables
+```{r}
+?plot
+plot(ChickWeight$Time,ChickWeight$weight)
+```
+
+Generic X-Y Plotting
+
+```{r}
+plot(ChickWeight$Time,ChickWeight$weight,
+     type = "s", # s for stair steps
+     main = "plotting weight")
+```
+
+Adding a line on the plot
+```{r}
+plot(ChickWeight$Time,ChickWeight$weight,
+     type = "l", # l for lines
+     main = "plotting weight")
+lines(c(1,20),c(350,50),
+      col="red") # lines(c(x1-value,x2-value),c(y1-value,y2-value))
+```
+
+
+More on scatterplots:
+pacman must already be installed; then load contributed
+packages (including pacman) with pacman
+```{r}
+pacman::p_load(pacman, rio, tidyverse)
+```
+
+Load data to work with:
+```{r}
+df <- import("~/GitHub/Learning R/StateData.xlsx") %>%
+  as_tibble() %>%
+  select(state_code, 
+    psychRegions,
+    instagram:modernDance) %>% 
+  mutate(psychRegions = as.factor(psychRegions)) %>%
+  print()
+```
+
+Scatterplots matrix: showing all possible associations
+```{r}
+df %>%
+  select(instagram:modernDance) %>% 
+  plot()  # Plot all associations
+```
+
+
+Bivariate scatterplot with defaults / Diagrama de dispersión bivariante con valores predeterminados
+Se seleccionan las variables scrapbook y modernDance (abajo a la derecha), muestra una covarianza negativa con outliers
+```{r}
+df %>%
+  select(scrapbook:modernDance) %>% 
+  plot()
+```
+
+
+Bivariate scatterplot with options / Diagrama de dispersiones bivariante con opciones:
+```{r}
+df %>%
+  select(scrapbook:modernDance) %>% 
+  plot(
+    main = "Scatterplot of Google Searches by State",
+    xlab = "Searches for \"scrapbook\"",
+    ylab = "Searches for \"modern dance\"",
+    col  = "gray",  # Color of points
+    pch  = 20,      # "Plotting character" (small circle)
+  )
+df %>%
+  lm(modernDance ~ scrapbook, data = .) %>%
+  abline()
+```
+
+
+```{r}
+?pch  # See plotting characters
+?lm # lm is used to fit linear models. It can be used to carry out regression, single stratum analysis of variance and analysis of covariance (although aov may provide a more convenient interface for these).
+?abline # This function adds one or more straight lines through the current plot
+```
+
+Add fit linear regression line (y ~ x) 
+lm - linear model, generic command for regression
+~ indicates one variable (modernDance - y axis) is a function of other (scrapbook - X axis)
+%>% pipes from tidyverse
+data = . means take the previous thing, which is df, and feed it there
+```{r}
+df %>%
+  select(scrapbook:modernDance) %>% 
+  plot(
+    main = "Scatterplot of Google Searches by State",
+    xlab = "Searches for \"scrapbook\"",
+    ylab = "Searches for \"modern dance\"",
+    col  = "gray",  # Color of points
+    pch  = 20,      # "Plotting character" (small circle)
+  )
+df %>%
+  lm(modernDance ~ scrapbook, data = .) %>%
+  abline()
+```
+The outlier on the top right makes the line to have a positive trend.
+
+
+REMOVE OUTLIER 
+First, identify the outlier
+```{r}
+df %>%
+  select(state_code, scrapbook) %>%
+  filter(scrapbook > 4) %>%  # Select outlier
+  print()
+```
+
+
+Bivariate scatterplot without outlier adding fit line
+```{r}
+df %>%
+  select(scrapbook:modernDance) %>% 
+  filter(scrapbook < 4) %>%  # filter out outlier
+  plot(
+    main = "Scatterplot of Google Searches by State",
+    xlab = "Searches for \"scrapbook\"",
+    ylab = "Searches for \"modern dance\"",
+    col  = "gray",  # Color of points
+    pch  = 20,      # "Plotting character" (small circle)
+  )
+df %>%
+  filter(scrapbook < 4) %>%  # filter out outlier
+  lm(modernDance ~ scrapbook, data = .) %>%
+  abline()
+```
+
+
+
+
+CLEAN UP 
+
+Clear environment
+```{r}
+rm(list = ls()) 
+```
+
+Clear packages
+```{r}
+p_unload(all)  # Remove all add-ons
+```
+
+Clear plots
+```{r}
+dev.off()  # But only if there IS a plot
+```
+
+Clear console
+```{r}
+cat("\014")  # ctrl+L
+```
+
+Clear mind :)
+
+
+
+
+
