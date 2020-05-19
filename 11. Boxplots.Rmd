@@ -1,0 +1,138 @@
+---
+title: "R Gráficos de caja o boxplot"
+output: html_notebook
+---
+
+Gráficos de caja o boxplot: Los gráficos de caja o bigote permiten visualizar dónde se encuentra el 50 % de los datos de una variable indicando el rango de valores central que queda delimitado por el rectángulo o caja. Además, generan un rango razonable donde cabe esperar que se encuentren las lecturas de la misma y marcan como v alo r e s a típic o s los que se salen de ese rango.
+
+ - The bottom line represents the minimum value. 
+ - The box encompasses the second quartile to the third quartile. 
+ - The dark black line is the median and 
+ - The top line is the fourth quartile. 
+And then the circles above the top line are outliers. 
+
+```{r}
+?boxplot # Produce box-and-whisker plot(s) of the given (grouped) values.
+```
+
+
+Quick intro using 
+```{r}
+data("mtcars")
+head(mtcars)
+```
+
+Plotting a simple example with just 1 atribute
+```{r}
+boxplot(mtcars$mpg)
+```
+
+The numbers used to create the boxplot
+```{r}
+fivenum(mtcars$mpg) 
+```
+
+Comparing one value to another with alternative notation, mpg as a function of cyl:
+```{r}
+boxplot(mpg ~ cyl, data = mtcars, col = "lightgray", varwidth = TRUE, 
+        main = "mpg vs cylinders",
+        ylab = "mpg",xlab = "cylinders")
+```
+
+
+More on boxplots
+pacman must already be installed; then load contributed
+packages (including pacman) with pacman
+```{r}
+pacman::p_load(pacman, tidyverse)
+```
+
+LOAD DATA 
+Using the diamonds dataset from ggplot2
+```{r}
+?diamonds  # Get information about the diamonds dataset
+diamonds   # Display the beginning of the dataset
+```
+
+
+
+Boxplot with defaults
+```{r}
+boxplot(diamonds$price)
+```
+
+
+
+Similar process using pipes
+```{r}
+diamonds %>%
+  select(price) %>%
+  boxplot()
+```
+
+
+
+Boxplot with options
+```{r}
+diamonds %>%
+  select(price) %>%
+  boxplot(
+    horizontal = T,  # Horizontal
+    notch  = T,      # Confidence interval for median
+    main   = "Boxplot of Price of Diamonds",
+    sub    = "(Source: ggplot2::diamonds)",
+    xlab   = "Price of Diamonds",
+    col    = "#CD0000"  # red3
+  )
+```
+
+
+
+BOXPLOTS BY GROUP 
+Boxplots by group using plot()
+```{r}
+diamonds %>%
+  select(color, price) %>%
+  plot()
+```
+
+
+
+Boxplots by group using boxplot()
+```{r}
+diamonds %>%
+  select(color, price) %>%
+  boxplot(
+    price ~ color,  # Tilde indicates formula
+    data  = . ,     # Dot is placeholder for pipe
+    col   = "#CD0000"
+  )
+```
+
+
+
+
+
+CLEAN UP 
+
+Clear environment
+```{r}
+rm(list = ls()) 
+```
+
+Clear packages
+```{r}
+p_unload(all)  # Remove all add-ons
+```
+
+Clear plots
+```{r}
+dev.off()  # But only if there IS a plot
+```
+
+Clear console
+```{r}
+cat("\014")  # ctrl+L
+```
+
+Clear mind :)
