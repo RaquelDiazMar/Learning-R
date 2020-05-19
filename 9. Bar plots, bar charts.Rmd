@@ -1,0 +1,200 @@
+---
+title: "R Bar plots or bar charts"
+output: html_notebook
+---
+
+Gráfico de barras: agrupa los valores de una variable respecto a una serie de categorías.
+
+```{r}
+data(ChickWeight)
+?fivenum # Returns Tukey's five number summary (minimum value, lower-hinge or first quartile, median, upper-hinge or third quartile, maximum value) for the input data.
+fiveValues <- fivenum(ChickWeight$weight) # just to see what we're working with
+fiveValues
+```
+
+```{r}
+warnings()
+```
+
+
+
+```{r}
+barplot(fiveValues) # the simplest of bar plots
+```
+
+```{r}
+barplot(height = fiveValues,
+        names.arg = fivenum(ChickWeight$weight),
+        horiz = TRUE,
+        col = fiveValues,
+        main = "Range for Chick Weights"
+)
+```
+
+```{r}
+barplot(height = fiveValues,
+        names.arg = fivenum(ChickWeight$weight),
+        horiz = FALSE,
+        col = fiveValues,
+        main = "Range for Chick Weights"
+)
+```
+
+
+More on bar charts
+pacman must already be installed; then load contributed
+packages (including pacman) with pacman
+```{r}
+pacman::p_load(pacman, tidyverse)
+```
+
+
+Load data to work with:
+Using the diamonds dataset from ggplot2
+```{r}
+?diamonds  # Get information about the diamonds dataset
+diamonds   # Display the beginning of the dataset
+```
+
+
+
+BARPLOT OF FREQUENCIES 
+```{r}
+?plot     # Get info on "Generic X-Y Plotting
+?barplot  # Get info on the "Bar Plots" function
+```
+
+Shortest method to make a barplot
+```{r}
+plot(diamonds$cut)
+```
+
+
+Similar process using pipes
+```{r}
+diamonds %>%
+  select(color) %>%
+  plot()
+```
+
+Similar code using barplot(); doesn't work
+```{r}
+diamonds %>%
+  select(clarity) %>%
+  barplot()  # Error: height must be a vector or a matrix
+```
+
+Create frequency vector with table()
+```{r}
+?table # uses the cross-classifying factors to build a contingency table of the counts at each combination of factor levels.
+```
+
+Try again with table()
+```{r}
+diamonds %>%
+  select(clarity) %>%
+  table() %>%  # Put data in appropriate format
+  barplot()
+```
+
+Sort bars by decreasing values (not for ordinal X)
+```{r}
+diamonds %>%
+  select(clarity) %>%
+  table() %>%
+  sort(decreasing = T) %>%  # Sort table
+  barplot()
+```
+
+
+Add options to plot
+```{r}
+diamonds %>%
+  select(clarity) %>%
+  table() %>%  # Put data in appropriate format
+  barplot(
+    main   = "Clarity of Diamonds",
+    sub    = "(Source: ggplot2::diamonds)",
+    horiz  = T,  # Draw horizontal bars
+    ylab   = "Clarity of Diamonds",  # Flip axis labels
+    xlab   = "Frequency",
+    xlim   = c(0, 15000),  # Limits for X axis
+    border = NA,  # No borders on bars
+    col    = "#CD0000"  # red3
+  )
+```
+
+
+
+SIDE-BY-SIDE BARPLOT OF FREQUENCIES 
+
+100% stacked bar
+```{r}
+diamonds %>%
+  select(color, clarity) %>%
+  plot()
+```
+
+
+Stacked bars: step 1: create table
+```{r}
+df <- diamonds %>%
+  select(color, clarity) %>%
+  table() %>%
+  print()  # Show table in Console
+```
+
+
+Stacked bars: step 1: create graph
+```{r}
+df %>%
+  barplot(legend = rownames(.))  # Draw plot w/legend
+```
+
+
+Side-by-side bar
+```{r}
+df %>%
+  barplot(
+    legend = rownames(.),  # Dot is placeholder for pipe
+    beside = T  # Put bars next to each other
+  )
+```
+
+
+
+
+
+CLEAN UP 
+
+Clear environment
+```{r}
+rm(list = ls()) 
+```
+
+Clear packages
+```{r}
+p_unload(all)  # Remove all add-ons
+```
+
+Clear plots
+```{r}
+dev.off()  # But only if there IS a plot
+```
+
+Clear console
+```{r}
+cat("\014")  # ctrl+L
+```
+
+Clear mind :)
+
+
+
+
+
+
+
+
+
+
