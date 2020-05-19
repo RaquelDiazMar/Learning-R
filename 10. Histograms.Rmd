@@ -1,0 +1,106 @@
+---
+title: "Histograma"
+output: html_notebook
+---
+
+Histrograma: es una gráfica que representa la acumulación de valores de una variable, indicando en qué zonas existe una mayor densidad de ocurrencias. Se disponen en rectángulos y pueden ser representados junto a una curva de densidad que completa la gráfica.
+
+Load some data to work with:
+```{r}
+data("ChickWeight")
+?hist
+head(ChickWeight)
+```
+
+
+Simple example
+```{r}
+hist(ChickWeight$weight)
+```
+
+
+
+changing the pattern of the histogram bars
+```{r}
+hist(ChickWeight$weight, density = 30)
+```
+
+
+
+Control where the histogram breaks occur
+```{r}
+hist(ChickWeight$weight, density = 30, breaks = c(0,100,200,max(ChickWeight$weight)))
+```
+
+
+
+Another example of controlling the breaks
+```{r}
+hist(ChickWeight$weight, breaks = fivenum(ChickWeight$weight))
+```
+
+
+
+
+
+More on Histograms:
+pacman must already be installed; then load contributed
+packages (including pacman) with pacman
+```{r}
+pacman::p_load(pacman, rio, tidyverse)
+```
+
+Load data to work with:
+Using the diamonds dataset from ggplot2
+```{r}
+?diamonds  # Get information about the diamonds dataset
+diamonds   # Display the beginning of the dataset
+```
+
+
+
+Histogram with defaults
+```{r}
+hist(diamonds$price)
+```
+
+
+
+Histogram with options
+```{r}
+hist(diamonds$price,
+  breaks = 7,  # Suggest number of breaks
+  main   = "Histogram of Price of Diamonds",
+  sub    = "(Source: ggplot2::diamonds)",
+  ylab   = "Frequency",
+  xlab   = "Price of Diamonds",
+  border = TRUE,  # No borders on bars
+  col    = "#CD0000"  # red3
+  )
+```
+
+
+
+CLEAN UP 
+
+Clear environment
+```{r}
+rm(list = ls()) 
+```
+
+Clear packages
+```{r}
+p_unload(all)  # Remove all add-ons
+```
+
+Clear plots
+```{r}
+dev.off()  # But only if there IS a plot
+```
+
+Clear console
+```{r}
+cat("\014")  # ctrl+L
+```
+
+Clear mind :)
