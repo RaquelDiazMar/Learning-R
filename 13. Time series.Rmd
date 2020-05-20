@@ -1,0 +1,160 @@
+---
+title: "R Time Series"
+output: html_notebook
+---
+
+Gráfico de serie temporal: Una serie temporal es una cadena de valores tomados en distintos instantes. Representarlas es útil para analizar tendencias y puntos de cambio.
+
+Studies of time-series data involve 2 fundamental questions:
+ - waht happened? description
+ - what will happen next? forecasting
+To work with a time series in R, it is needed to place it into a time-series object. 
+A vector of numbers, or a column in a data frame, can saved as a time-series using the ts() function:
+
+timeseries <- ts(data, start=, end=, frequency)
+
+ - data: is a numeric vector/column in a dataframe containing the observations
+ - start: specifies the series start time
+ - end: specifies the end time (optional)
+ - frequency: indicates the number of observations per unit time
+ 
+Example:
+```{r}
+sales <- c(18,33,41,7,34,35,24,25,24,21,25,20,22,31,40,29,25,21,22,54,31,25,26,35)
+```
+
+```{r}
+tsales <- ts(sales, start=c(2003, 1),frequency = 12)
+tsales
+```
+
+```{r}
+plot(tsales)
+```
+
+```{r}
+start(tsales)
+```
+
+```{r}
+end(tsales)
+```
+
+```{r}
+frequency(tsales)
+```
+
+```{r}
+tsales.subset <- window(tsales, start = c(2003,5), end=c(2004,6))
+tsales.subset
+```
+
+
+More on plotting time-series
+pacman must already be installed; then load contributed
+packages (including pacman) with pacman
+```{r}
+pacman::p_load(pacman, tidyverse)
+```
+
+
+Load base packages manually
+```{r}
+library(datasets)  # For example datasets
+```
+
+
+SINGLE TIME SERIES 
+uspop
+```{r}
+?uspop  # Get info about data
+uspop   # Display data
+
+?ts  # Get info about time-series objects
+```
+
+
+Plot with default plot()
+```{r}
+plot(uspop)
+```
+
+
+Plot with options
+```{r}
+uspop %>% 
+  plot(
+    main = "US Population 1790â1970 ",
+    sub  = "(Source: datasets::uspop)",
+    xlab = "Year",
+    ylab = "Population (in millions)",
+  )
+abline(v = 1930, col = "lightgray")
+text(1930, 10, "1930", col = "red3") 
+abline(v = 1940, col = "lightgray")
+text(1940, 2, "1940", col = "red3") 
+```
+
+
+Plot with ts.plot()
+```{r}
+?ts.plot
+```
+
+Although this can be used for a single time series, plo is easier to use and is preferred.
+```{r}
+ts.plot(uspop)
+```
+
+
+Plot with plot.ts()
+More powerful alternative
+```{r}
+?plot.ts
+plot.ts(uspop)
+```
+
+
+
+MULTIPLE TIME SERIES 
+
+EuStockMarkets
+```{r}
+?EuStockMarkets
+EuStockMarkets
+```
+
+
+Three different plot functions
+```{r}
+plot(EuStockMarkets)     # Stacked windows
+plot.ts(EuStockMarkets)  # Identical
+ts.plot(EuStockMarkets)  # One window
+```
+
+
+
+
+CLEAN UP 
+
+Clear environment
+```{r}
+rm(list = ls()) 
+```
+
+Clear packages
+```{r}
+p_unload(all)  # Remove all add-ons
+```
+
+Clear plots
+```{r}
+dev.off()  # But only if there IS a plot
+```
+
+Clear console
+```{r}
+cat("\014")  # ctrl+L
+```
+
+Clear mind :)
