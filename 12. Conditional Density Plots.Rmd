@@ -1,0 +1,87 @@
+---
+title: "R Conditional Density Plots"
+output: html_notebook
+---
+
+Create some data to work with
+```{r}
+data("ChickWeight")
+
+ChickWeight
+```
+
+
+Given a certain amount of time, how much should a chick weigh?
+
+Create ThreeWeights because conditional density plots require a factor
+```{r}
+?cut # Convert Numeric to Factor, divides the range of x into intervals and codes the values in x according to which interval they fall. The leftmost interval corresponds to level one, the next leftmost to level two and so on.
+ThreeWeights <- cut(ChickWeight$weight, 3, labels = c(34, 148, 260))
+```
+
+
+Create the plot
+```{r}
+cdplot(ChickWeight$Time, ThreeWeights)
+```
+
+
+Add meaning to the plot
+```{r}
+cdplot(ChickWeight$Time, ThreeWeights,
+       main = "How much should a chick weigh?",
+       ylab = "Probable Weight",
+       xlab = "Days"
+)
+```
+
+
+
+Alternative notation
+```{r}
+cdplot(factor(weight) ~ Time, data = ChickWeight)
+```
+
+
+
+Add meaning to the alternative notation
+```{r}
+cdplot(factor(cut(weight, 6, labels = 1:6 * 62)) ~ Time, 
+       data = ChickWeight,
+       main = "How much should a chick weigh?",
+       ylab = "Weight",
+       xlab = "Days"
+)
+```
+
+
+
+
+
+
+
+
+
+CLEAN UP 
+
+Clear environment
+```{r}
+rm(list = ls()) 
+```
+
+Clear packages
+```{r}
+p_unload(all)  # Remove all add-ons
+```
+
+Clear plots
+```{r}
+dev.off()  # But only if there IS a plot
+```
+
+Clear console
+```{r}
+cat("\014")  # ctrl+L
+```
+
+Clear mind :)
